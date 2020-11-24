@@ -4,63 +4,30 @@ import * as Tone from 'tone'
 
 import './index.css';
 import Chord from './chord.js';
+import Checker from './checker.js';
 
-class Sound extends React.Component {
-    render() {
-        return (
-
-            <div>
-                <button onClick={this.props.onClick}>
-                    {this.props.value}
+function Starter(props) {
+    return <div>
+                <button onClick={props.onClick}>
+                    {props.value}
                 </button>
-            </div>
-        )
-    }
-}
+            </div>;
+  }
 
 class HumApp extends React.Component {
     constructor(props) {
         super(props);
-        this.chords = ['Bb', 'F#', 'E', 'G', 'Ab'];
+        this.chords = ['Bb', 'B', 'C', 'F#', 'E', 'G', 'Ab'];
         this.state = {
             index: 0,
             current: this.chords[0],
             isRunning: false,
         }
-        this.synth = new Tone.Synth().toDestination();
+        this.synth = new Tone.PolySynth(Tone.Synth).toDestination();
 
         this.chunks = []
 
         this.startStop = this.startStop.bind(this);
-        this.captureInputStream = this.captureInputStream.bind(this);
-    }
-
-    captureInputStream() {
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            console.log('getUserMedia supported.');
-            navigator.mediaDevices.getUserMedia({ audio: true })
-                .then((stream) => {
-                    this.mediaRecorder = new MediaRecorder(stream);
-
-                    this.mediaRecorder.ondataavailable = (e) => {
-                            console.log(`recorded ${e.data.size} chunks`)
-                            this.chunks.push(e.data);
-                    }
-                    this.mediaRecorder.onstop = (e) => {
-                            console.log(`stopped recording`)
-                    }
-                })
-                .catch(function (err) {
-                    console.log('The following getUserMedia error occured: ' + err);
-                }
-                );
-        } else {
-            console.log('getUserMedia not supported on your browser!');
-        }
-    }
-     
-    componentDidMount() { 
-        this.captureInputStream() 
     }
 
     startStop() {
@@ -69,10 +36,7 @@ class HumApp extends React.Component {
             clearInterval(this.timer);
         } else {
             Tone.start()
-            this.mediaRecorder.start()
             this.timer = setInterval(() => {
-                if (this.mediaRecorder.state === 'recording')
-                    this.mediaRecorder.stop()
                 let next_idx = (this.state.index + 1) % this.chords.length
                 this.setState({ index: next_idx, current: this.chords[next_idx] })
             }, INTERVAL);
@@ -86,8 +50,11 @@ class HumApp extends React.Component {
                 <div className="chord">
                     <Chord value={this.state.current} synth={this.synth} />
                 </div>
-                <div className="sound">
-                    <Sound onClick={this.startStop} value={(this.state.isRunning ? "Stop" : "Start")} />
+                <div className="starter">
+                    <Starter onClick={this.startStop} value={(this.state.isRunning ? "Stop" : "Start")} />
+                </div>
+                <div className="checker">
+                    <Checker value={this.state.current} />
                 </div>
             </div>
         );
