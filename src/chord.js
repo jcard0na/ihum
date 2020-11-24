@@ -16,18 +16,29 @@ class Chord extends React.Component {
         this.note2idx = {}
         for (let i = 0; i < notes.length; i++)
             this.note2idx[notes[i]] = i
+
+        this.handleDone = this.handleDone.bind(this)
     }
     componentDidUpdate() {
         const now = Tone.now()
         let root = `${this.props.value}4`
         let third = notes[this.note2idx[root] + 4]
         let fifth = notes[this.note2idx[root] + 7]
-        // this.props.synth.triggerAttack(root, "8n", now);
-        // this.props.synth.triggerAttack(third, "8n", now + 0.25);
-        // this.props.synth.triggerAttack(fifth, "8n", now + 0.5);
-        // this.props.synth.triggerRelease([root, third, fifth], now + 1.5);
-        this.props.synth.triggerAttackRelease([root, third, fifth], '8n', now);
+        this.props.synth.sync()
+        this.props.synth.triggerAttack(root, "8n", now);
+        this.props.synth.triggerAttack(third, "8n", now + 0.25);
+        this.props.synth.triggerAttack(fifth, "8n", now + 0.5);
+        this.props.synth.triggerRelease([root, third, fifth], now + 1);
+
+        Tone.Transport.scheduleOnce( (time) => { return this.handleDone() } , 3)
+        Tone.Transport.start()
     }
+
+    handleDone() {
+        Tone.Transport.start();
+        this.props.onDone();
+    }
+
     render() {
         return <div>
             {this.props.value}

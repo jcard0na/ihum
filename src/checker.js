@@ -7,28 +7,28 @@ Copyright (c) 2014 Chris Wilson
 Licensed under MIT License
 */
 
-var noteStrings = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+var noteStrings = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"];
 
 function noteFromPitch(frequency) {
     var noteNum = 12 * (Math.log(frequency / 440) / Math.log(2));
     return Math.round(noteNum) + 69;
 }
 
-function autoCorrelate( buf, sampleRate ) {
-	// Implements the ACF2+ algorithm
-	var SIZE = buf.length;
-	var rms = 0;
+function autoCorrelate(buf, sampleRate) {
+    // Implements the ACF2+ algorithm
+    var SIZE = buf.length;
+    var rms = 0;
 
-	for (let i=0;i<SIZE;i++) {
-		var val = buf[i];
-		rms += val*val;
-	}
-	rms = Math.sqrt(rms/SIZE);
-	if (rms<0.01) // not enough signal
-		return -1;
+    for (let i = 0; i < SIZE; i++) {
+        var val = buf[i];
+        rms += val * val;
+    }
+    rms = Math.sqrt(rms / SIZE);
+    if (rms < 0.01) // not enough signal
+        return -1;
 
-	var r1=0, r2=SIZE-1, thres=0.2;
-	for (let i=0; i<SIZE/2; i++)
+    var r1 = 0, r2 = SIZE - 1, thres = 0.2;
+    for (let i = 0; i < SIZE / 2; i++)
         if (Math.abs(buf[i]) < thres) { r1 = i; break; }
     for (let i = 1; i < SIZE / 2; i++)
         if (Math.abs(buf[SIZE - i]) < thres) { r2 = SIZE - i; break; }
@@ -69,6 +69,7 @@ class Checker extends React.Component {
         this.buf = new Float32Array(this.buflen);
         this.state = {
             note: "-",
+            inputCaptured: false,
         }
 
         this.captureInputStream = this.captureInputStream.bind(this);
@@ -88,6 +89,7 @@ class Checker extends React.Component {
                     this.analyser = Tone.context.createAnalyser();
                     this.analyser.fftSize = 2048;
                     this.mediaStreamSource.connect(this.analyser);
+                    this.setState({inputCaptured: true})
                     this.updatePitch();
                 })
                 .catch(function (err) {
@@ -112,15 +114,22 @@ class Checker extends React.Component {
             // var detune = centsOffFromPitch( pitch, note );
         }
 
-        requestAnimationFrame(this.updatePitch);
+        if (this.props.challenge[0] === noteStrings[note % 12]) {
+            // TODO: propagate up that challenge was met
+            this.props.onDone()
+        }
+        else {
+            requestAnimationFrame(this.updatePitch);
+        }
     }
 
-    componentDidMount() {
-        this.captureInputStream();
+    componentDidUpdate() {
+        if (this.props.enabled && this.state.inputCaptured === false)
+            this.captureInputStream();
     }
 
     render() {
-        return <div> {this.state.note} </div>
+        return <div> {(this.props.enabled ? this.state.note : "")} </div>
     }
 }
 

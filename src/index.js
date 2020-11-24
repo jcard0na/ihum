@@ -33,11 +33,11 @@ const challenges = [
 
 function Starter(props) {
     return <div>
-                <button onClick={props.onClick}>
-                    {props.value}
-                </button>
-            </div>;
-  }
+        <button onClick={props.onClick}>
+            {props.value}
+        </button>
+    </div>;
+}
 
 const states = {
     PAUSED: 'paused',
@@ -49,7 +49,7 @@ class HumApp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            challenge: { chord: null, notes: null},
+            challenge: { chord: null, notes: null },
             num: -1,
             current: states.PAUSED,
         }
@@ -59,16 +59,21 @@ class HumApp extends React.Component {
 
         this.startStop = this.startStop.bind(this);
         this.nextChallenge = this.nextChallenge.bind(this);
+        this.checkChallenge = this.checkChallenge.bind(this);
     }
 
     nextChallenge() {
-        const INTERVAL = 2000
         const next_challenge = (this.state.num + 1) % challenges.length
         /* TODO: check if challenge passed or failed before moving on to next */
-        this.setState({ current: states.PLAYING, num: next_challenge, challenge: challenges[next_challenge]})
-        this.timer = setTimeout(() => {
-            this.nextChallenge();
-        }, INTERVAL);
+        this.setState({ current: states.PLAYING, num: next_challenge, challenge: challenges[next_challenge] })
+        // const INTERVAL = 2000
+        // this.timer = setTimeout(() => {
+        //     this.nextChallenge();
+        // }, INTERVAL);
+    }
+
+    checkChallenge() {
+        this.setState({ current: states.CHECKING })
     }
 
     startStop() {
@@ -85,13 +90,19 @@ class HumApp extends React.Component {
         return (
             <div>
                 <div className="chord">
-                    <Chord value={this.state.challenge.chord} synth={this.synth} />
+                    <Chord value={this.state.challenge.chord}
+                        synth={this.synth}
+                        onDone={this.checkChallenge} />
                 </div>
                 <div className="checker">
-                    <Checker enabled={this.state.challenge === 'CHECKING'} challenge={this.state.challenge.notes} />
+                    <Checker enabled={this.state.current === states.CHECKING}
+                        challenge={this.state.challenge.notes} 
+                        onDone={this.nextChallenge}
+                        />
                 </div>
                 <div className="starter">
-                    <Starter onClick={this.startStop} value={(this.state.current === states.PAUSED ? "Start" : "Stop")} />
+                    <Starter onClick={this.startStop}
+                        value={(this.state.current === states.PAUSED ? "Start" : "Stop")} />
                 </div>
             </div>
         );
