@@ -6,6 +6,31 @@ import './index.css';
 import Chord from './chord.js';
 import Checker from './checker.js';
 
+// A challenge is a series of chords that will be played in sequence, followed
+// by a series of notes that need to be hummed.
+const challenges = [
+    {
+        chord: ['Bb'],
+        notes: ['Bb'],
+    },
+    {
+        chord: ['F'],
+        notes: ['F', 'A', 'C'],
+    },
+    {
+        chord: ['B'],
+        notes: ['Bb'],
+    },
+    {
+        chord: ['D'],
+        notes: ['Bb'],
+    },
+    {
+        chord: ['G'],
+        notes: ['Bb'],
+    },
+]
+
 function Starter(props) {
     return <div>
                 <button onClick={props.onClick}>
@@ -14,47 +39,59 @@ function Starter(props) {
             </div>;
   }
 
+const states = {
+    PAUSED: 'paused',
+    PLAYING: 'playing',
+    CHECKING: 'checking',
+}
+
 class HumApp extends React.Component {
     constructor(props) {
         super(props);
-        this.chords = ['Bb', 'B', 'C', 'F#', 'E', 'G', 'Ab'];
         this.state = {
-            index: 0,
-            current: this.chords[0],
-            isRunning: false,
+            challenge: { chord: null, notes: null},
+            num: -1,
+            current: states.PAUSED,
         }
         this.synth = new Tone.PolySynth(Tone.Synth).toDestination();
 
         this.chunks = []
 
         this.startStop = this.startStop.bind(this);
+        this.nextChallenge = this.nextChallenge.bind(this);
+    }
+
+    nextChallenge() {
+        const INTERVAL = 2000
+        const next_challenge = (this.state.num + 1) % challenges.length
+        /* TODO: check if challenge passed or failed before moving on to next */
+        this.setState({ current: states.PLAYING, num: next_challenge, challenge: challenges[next_challenge]})
+        this.timer = setTimeout(() => {
+            this.nextChallenge();
+        }, INTERVAL);
     }
 
     startStop() {
-        const INTERVAL = 2000
-        if (this.state.isRunning) {
-            clearInterval(this.timer);
-        } else {
+        if (this.state.current === states.PAUSED) {
             Tone.start()
-            this.timer = setInterval(() => {
-                let next_idx = (this.state.index + 1) % this.chords.length
-                this.setState({ index: next_idx, current: this.chords[next_idx] })
-            }, INTERVAL);
+            this.nextChallenge();
+        } else {
+            this.setState({ current: states.PAUSED })
+            clearTimeout(this.timer);
         }
-        this.setState({ isRunning: !this.state.isRunning })
     }
 
     render() {
         return (
             <div>
                 <div className="chord">
-                    <Chord value={this.state.current} synth={this.synth} />
-                </div>
-                <div className="starter">
-                    <Starter onClick={this.startStop} value={(this.state.isRunning ? "Stop" : "Start")} />
+                    <Chord value={this.state.challenge.chord} synth={this.synth} />
                 </div>
                 <div className="checker">
-                    <Checker value={this.state.current} />
+                    <Checker enabled={this.state.challenge === 'CHECKING'} challenge={this.state.challenge.notes} />
+                </div>
+                <div className="starter">
+                    <Starter onClick={this.startStop} value={(this.state.current === states.PAUSED ? "Start" : "Stop")} />
                 </div>
             </div>
         );

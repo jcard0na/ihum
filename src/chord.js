@@ -29,7 +29,9 @@ class Chord extends React.Component {
         this.props.synth.triggerAttackRelease([root, third, fifth], '8n', now);
     }
     render() {
-        return this.props.value
+        return <div>
+            {this.props.value}
+        </div>
     }
 };
 
