@@ -59,6 +59,40 @@ function autoCorrelate(buf, sampleRate) {
     return sampleRate / T0;
 }
 
+class Decider {
+    constructor(notes) {
+        this.hist = {};
+        this.notes = notes
+        this.current = 0;
+        this.required_hits = 10;
+        this.challenge_done = false;
+        console.log(`Decider with ${notes}`)
+        for (let i = 0; i < notes.length; i++) {
+            this.hist[notes[i]] = 0;
+        }
+    }
+
+    recordNote(note) {
+        if (note === this.notes[this.current] && !this.challenge_done) {
+            console.log(this.hist)
+            this.hist[note] += 1;
+            if (this.hist[note] === this.required_hits)
+                this.current += 1;
+            if (this.current === this.notes.length)
+                this.challenge_done = true;
+        }
+    }
+
+    getNotes() {
+        return this.notes;
+    }
+
+    isDone() {
+        if (this.challenge_done)
+            console.log("Decider done")
+        return this.challenge_done;
+    }
+}
 
 class Checker extends React.Component {
     constructor(props) {
@@ -117,25 +151,32 @@ class Checker extends React.Component {
         if (!this.props.enabled)
             return
 
-        if (this.props.challenge[0] === noteStrings[note % 12]) {
-                this.props.onDone()
-        }
-        else {
+        this.decider.recordNote(this.note)
+        if (this.decider.isDone()) {
+            this.props.onDone()
+        } else {
             requestAnimationFrame(this.updatePitch);
         }
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
         console.log(`checker enabled: ${this.props.enabled}`)
-        if (this.props.enabled)
-            if (this.state.inputCaptured === false)
-                this.captureInputStream();
-            else
-                this.updatePitch()
+        if (!this.props.enabled)
+            return
+
+        if (this.decider == null || this.props.challenge !== this.decider.getNotes())
+            this.decider = new Decider(this.props.challenge);
+
+        if (this.state.inputCaptured === false)
+            this.captureInputStream();
+        else
+            this.updatePitch()
+
     }
 
     render() {
-        return <div> {(this.props.enabled ? this.note : "")} </div>
+        console.log('checker rendered')
+        return <div> {this.note} </div>
     }
 }
 

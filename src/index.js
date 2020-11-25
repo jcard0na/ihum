@@ -19,15 +19,15 @@ const challenges = [
     },
     {
         chord: ['B'],
-        notes: ['Bb'],
+        notes: ['B', 'Eb', 'F#'],
     },
     {
         chord: ['D'],
-        notes: ['Bb'],
+        notes: ['D', 'F#', 'A'],
     },
     {
         chord: ['G'],
-        notes: ['Bb'],
+        notes: ['G', 'B', 'D'],
     },
 ]
 
