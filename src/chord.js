@@ -20,22 +20,27 @@ class Chord extends React.Component {
         this.handleDone = this.handleDone.bind(this)
     }
     componentDidUpdate() {
-        const now = Tone.now()
-        let root = `${this.props.value}4`
-        let third = notes[this.note2idx[root] + 4]
-        let fifth = notes[this.note2idx[root] + 7]
-        this.props.synth.sync()
-        this.props.synth.triggerAttack(root, "8n", now);
-        this.props.synth.triggerAttack(third, "8n", now + 0.25);
-        this.props.synth.triggerAttack(fifth, "8n", now + 0.5);
-        this.props.synth.triggerRelease([root, third, fifth], now + 1);
+        if (this.props.enabled) {
+            let root = `${this.props.value}4`
+            let third = notes[this.note2idx[root] + 4]
+            let fifth = notes[this.note2idx[root] + 7]
+            console.log(`${root} ${third} ${fifth}`)
 
-        Tone.Transport.scheduleOnce( (time) => { return this.handleDone() } , 3)
-        Tone.Transport.start()
+            this.props.synth.sync();
+
+            this.props.synth.triggerAttack(root);
+            this.props.synth.triggerAttack(third, "+8n");
+            this.props.synth.triggerAttack(fifth, "+4n");
+            this.props.synth.triggerRelease([root, third, fifth], "+2n");
+            Tone.Transport.scheduleOnce((time) => { return this.handleDone() }, "+1n")
+            Tone.Transport.start();
+        }
     }
 
     handleDone() {
-        Tone.Transport.start();
+        console.log('chord done')
+        this.props.synth.unsync();
+        Tone.Transport.stop();
         this.props.onDone();
     }
 

@@ -82,7 +82,7 @@ class HumApp extends React.Component {
             this.nextChallenge();
         } else {
             this.setState({ current: states.PAUSED })
-            clearTimeout(this.timer);
+            // clearTimeout(this.timer);
         }
     }
 
@@ -90,15 +90,18 @@ class HumApp extends React.Component {
         return (
             <div>
                 <div className="chord">
-                    <Chord value={this.state.challenge.chord}
+                    <Chord
+                        enabled={this.state.current === states.PLAYING}
                         synth={this.synth}
+                        value={this.state.challenge.chord}
                         onDone={this.checkChallenge} />
                 </div>
                 <div className="checker">
-                    <Checker enabled={this.state.current === states.CHECKING}
-                        challenge={this.state.challenge.notes} 
+                    <Checker
+                        enabled={this.state.current === states.CHECKING}
+                        challenge={this.state.challenge.notes}
                         onDone={this.nextChallenge}
-                        />
+                    />
                 </div>
                 <div className="starter">
                     <Starter onClick={this.startStop}
