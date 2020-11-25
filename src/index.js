@@ -87,6 +87,7 @@ class HumApp extends React.Component {
     }
 
     render() {
+        console.log(this.state.current)
         return (
             <div>
                 <div className="chord">

@@ -67,8 +67,8 @@ class Checker extends React.Component {
         this.mediaStreamSource = null
         this.buflen = 2048;
         this.buf = new Float32Array(this.buflen);
+        this.note = "-"
         this.state = {
-            note: "-",
             inputCaptured: false,
         }
 
@@ -89,7 +89,7 @@ class Checker extends React.Component {
                     this.analyser = Tone.context.createAnalyser();
                     this.analyser.fftSize = 2048;
                     this.mediaStreamSource.connect(this.analyser);
-                    this.setState({inputCaptured: true})
+                    this.setState({ inputCaptured: true })
                     this.updatePitch();
                 })
                 .catch(function (err) {
@@ -110,13 +110,15 @@ class Checker extends React.Component {
             let pitch = ac;
             //console.log(Math.round(pitch));
             note = noteFromPitch(pitch);
-            this.setState({ note: noteStrings[note % 12] });
+            this.note = noteStrings[note % 12];
             // var detune = centsOffFromPitch( pitch, note );
         }
 
+        if (!this.props.enabled)
+            return
+
         if (this.props.challenge[0] === noteStrings[note % 12]) {
-            // TODO: propagate up that challenge was met
-            this.props.onDone()
+                this.props.onDone()
         }
         else {
             requestAnimationFrame(this.updatePitch);
@@ -124,12 +126,16 @@ class Checker extends React.Component {
     }
 
     componentDidUpdate() {
-        if (this.props.enabled && this.state.inputCaptured === false)
-            this.captureInputStream();
+        console.log(`checker enabled: ${this.props.enabled}`)
+        if (this.props.enabled)
+            if (this.state.inputCaptured === false)
+                this.captureInputStream();
+            else
+                this.updatePitch()
     }
 
     render() {
-        return <div> {(this.props.enabled ? this.state.note : "")} </div>
+        return <div> {(this.props.enabled ? this.note : "")} </div>
     }
 }
 

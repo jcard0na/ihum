@@ -20,6 +20,7 @@ class Chord extends React.Component {
         this.handleDone = this.handleDone.bind(this)
     }
     componentDidUpdate() {
+        console.log(`chord enabled: ${this.props.enabled}`)
         if (this.props.enabled) {
             let root = `${this.props.value}4`
             let third = notes[this.note2idx[root] + 4]
