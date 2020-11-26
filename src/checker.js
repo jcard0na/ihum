@@ -1,5 +1,6 @@
 import React from 'react';
 import * as Tone from 'tone'
+import { Decider } from './Decider';
 
 /* 
 Derived from https://github.com/cwilso/PitchDetect
@@ -7,7 +8,8 @@ Copyright (c) 2014 Chris Wilson
 Licensed under MIT License
 */
 
-var noteStrings = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"];
+export const noteStrings = ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
+export const intervalStrings = ['P1', 'm2', 'M2', 'm3', 'M3', 'P4', 'A4', 'P5', 'm6', 'M6', 'm7', 'M7'];
 
 function noteFromPitch(frequency) {
     var noteNum = 12 * (Math.log(frequency / 440) / Math.log(2));
@@ -57,41 +59,6 @@ function autoCorrelate(buf, sampleRate) {
     if (a) T0 = T0 - b / (2 * a);
 
     return sampleRate / T0;
-}
-
-class Decider {
-    constructor(notes) {
-        this.hist = {};
-        this.notes = notes
-        this.current = 0;
-        this.required_hits = 10;
-        this.challenge_done = false;
-        console.log(`Decider with ${notes}`)
-        for (let i = 0; i < notes.length; i++) {
-            this.hist[notes[i]] = 0;
-        }
-    }
-
-    recordNote(note) {
-        if (note === this.notes[this.current] && !this.challenge_done) {
-            console.log(this.hist)
-            this.hist[note] += 1;
-            if (this.hist[note] === this.required_hits)
-                this.current += 1;
-            if (this.current === this.notes.length)
-                this.challenge_done = true;
-        }
-    }
-
-    getNotes() {
-        return this.notes;
-    }
-
-    isDone() {
-        if (this.challenge_done)
-            console.log("Decider done")
-        return this.challenge_done;
-    }
 }
 
 class Checker extends React.Component {

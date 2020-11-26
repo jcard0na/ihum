@@ -3,31 +3,32 @@ import ReactDOM from 'react-dom';
 import * as Tone from 'tone'
 
 import './index.css';
-import Chord from './chord.js';
-import Checker from './checker.js';
+import Chord from './Chord.js';
+import Checker from './Checker.js';
+import Challenge from './Challenge.js';
 
 // A challenge is a series of chords that will be played in sequence, followed
 // by a series of notes that need to be hummed.
 const challenges = [
     {
-        chord: ['Bb'],
-        notes: ['Bb'],
+        chord: 'Bb',
+        ask: ['P1'],
     },
     {
-        chord: ['F'],
-        notes: ['F', 'A', 'C'],
+        chord: 'F',
+        ask: ['P1', 'M3', 'P5'],
     },
     {
-        chord: ['B'],
-        notes: ['B', 'Eb', 'F#'],
+        chord: 'B',
+        ask: ['P1', 'M3', 'P5'],
     },
     {
-        chord: ['D'],
-        notes: ['D', 'F#', 'A'],
+        chord: 'D',
+        ask: ['P1', 'M3', 'P5'],
     },
     {
-        chord: ['G'],
-        notes: ['G', 'B', 'D'],
+        chord: 'G',
+        ask: ['P1', 'M3', 'P5'],
     },
 ]
 
@@ -49,7 +50,7 @@ class HumApp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            challenge: { chord: null, notes: null },
+            challenge: { chord: null, ask: null },
             num: -1,
             current: states.PAUSED,
         }
@@ -94,13 +95,19 @@ class HumApp extends React.Component {
                     <Chord
                         enabled={this.state.current === states.PLAYING}
                         synth={this.synth}
-                        value={this.state.challenge.chord}
+                        chord={this.state.challenge.chord}
                         onDone={this.checkChallenge} />
+                </div>
+                <div className="challenge">
+                    <Challenge
+                        enabled={this.state.current === states.CHECKING}
+                        ask={this.state.challenge.ask}
+                    />
                 </div>
                 <div className="checker">
                     <Checker
                         enabled={this.state.current === states.CHECKING}
-                        challenge={this.state.challenge.notes}
+                        challenge={this.state.challenge}
                         onDone={this.nextChallenge}
                     />
                 </div>
