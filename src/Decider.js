@@ -2,7 +2,10 @@ import { noteStrings, intervalStrings } from './Checker';
 
 export class Decider {
     constructor(challenge) {
+        this.challenge = challenge;
+        // histogram of hits
         this.hist = {};
+        // list of notes from requested intervals, in the same order
         this.notes = [];
         this.current = 0;
         this.required_hits = 10;
@@ -36,18 +39,29 @@ export class Decider {
     }
 
     recordNote(note) {
+        let progress_made = false;
         if (note === this.notes[this.current] && !this.challenge_done) {
             console.log(this.hist);
+            progress_made = true;
             this.hist[note] += 1;
             if (this.hist[note] === this.required_hits)
                 this.current += 1;
             if (this.current === this.notes.length)
                 this.challenge_done = true;
         }
+        return progress_made; 
     }
 
-    getNotes() {
-        return this.notes;
+    getChallenge() {
+        return this.challenge;
+    }
+
+    getCompleted() {
+        return Array.from(this.notes, 
+            (note) => {
+                return 100 * this.hist[note] / this.required_hits;
+            }, 
+            this);
     }
 
     isDone() {

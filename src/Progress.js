@@ -1,4 +1,4 @@
-const Challenge = (props) => {
+function Progress(props) {
   const { bgcolor, completed } = props;
 
   const containerStyles = {
@@ -9,13 +9,6 @@ const Challenge = (props) => {
     margin: 50
   }
 
-  const fillerStyles = {
-    height: '100%',
-    width: `${completed}%`,
-    backgroundColor: bgcolor,
-    borderRadius: 'inherit',
-    textAlign: 'right'
-  }
 
   const labelStyles = {
     padding: 5,
@@ -25,11 +18,26 @@ const Challenge = (props) => {
 
   return (
     <div style={containerStyles}>
-      <div style={fillerStyles}>
-        <span style={labelStyles}>{`${completed}%`}</span>
-      </div>
+      {props.completed.map((value, index) => {
+        return (
+          <div key={index} style={getFillerStyles(completed[index], bgcolor)}>
+                <span style={labelStyles}>{`${completed[index]}%`}</span>
+          </div>
+        )
+      })}
     </div>
   );
 };
 
-export default Challenge
+function getFillerStyles(completed, bgcolor) {
+  const fillerStyles = {
+    height: '100%',
+    width: `${completed}%`,
+    backgroundColor: bgcolor,
+    borderRadius: 'inherit',
+    textAlign: 'right'
+  }
+  return fillerStyles;
+}
+
+export default Progress 

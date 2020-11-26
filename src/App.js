@@ -4,7 +4,6 @@ import * as Tone from 'tone'
 import './index.css';
 import Chord from './Chord.js';
 import Checker from './Checker.js';
-import Challenge from './Challenge.js';
 import { challenges } from './challenges';
 
 function Starter(props) {
@@ -65,12 +64,6 @@ class App extends React.Component {
                         synth={this.synth}
                         chord={this.state.challenge.chord}
                         onDone={this.checkChallenge} />
-                </div>
-                <div className="challenge">
-                    <Challenge
-                        enabled={this.state.current === states.CHECKING}
-                        ask={this.state.challenge.ask}
-                    />
                 </div>
                 <div className="checker">
                     <Checker

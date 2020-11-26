@@ -1,9 +1,11 @@
 import React from 'react';
 import * as Tone from 'tone'
+
+import Progress from './Progress.js';
 import { Decider } from './Decider';
 
 /* 
-Derived from https://github.com/cwilso/PitchDetect
+Pitch detection code copied from from https://github.com/cwilso/PitchDetect
 Copyright (c) 2014 Chris Wilson
 Licensed under MIT License
 */
@@ -71,6 +73,7 @@ class Checker extends React.Component {
         this.note = "-"
         this.state = {
             inputCaptured: false,
+            completed: [0],
         }
 
         this.captureInputStream = this.captureInputStream.bind(this);
@@ -118,7 +121,8 @@ class Checker extends React.Component {
         if (!this.props.enabled)
             return
 
-        this.decider.recordNote(this.note)
+        if (this.decider.recordNote(this.note))
+            this.setState({completed: this.decider.getCompleted()})
         if (this.decider.isDone()) {
             this.props.onDone()
         } else {
@@ -131,7 +135,7 @@ class Checker extends React.Component {
         if (!this.props.enabled)
             return
 
-        if (this.decider == null || this.props.challenge !== this.decider.getNotes())
+        if (this.decider == null || this.props.challenge !== this.decider.getChallenge())
             this.decider = new Decider(this.props.challenge);
 
         if (this.state.inputCaptured === false)
@@ -143,7 +147,10 @@ class Checker extends React.Component {
 
     render() {
         console.log('checker rendered')
-        return <div> {this.note} </div>
+        return <div>
+            {this.note}
+            <div><Progress bgcolor='#123456' completed={this.state.completed} /></div>
+        </div>
     }
 }
 
