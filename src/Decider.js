@@ -19,8 +19,6 @@ export class Decider {
         let root_idx = -1;
         let interval_idx = -1;
         for (let i = 0; i < noteStrings.length; i++) {
-            console.log(`${root} === ${noteStrings[i]} ? ${root === noteStrings[i]}`)
-            console.log(`${typeof root} === ${typeof noteStrings[i]}`)
             if (root === noteStrings[i])
                 root_idx = i;
         }
