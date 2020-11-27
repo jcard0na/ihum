@@ -33,7 +33,7 @@ function getFillerStyles(completed, bgcolor) {
   const fillerStyles = {
     height: '100%',
     width: `${completed}%`,
-    backgroundColor: bgcolor,
+    backgroundColor: `${completed === 100 ? '#119933' : bgcolor}`,
     borderRadius: 'inherit',
     textAlign: 'right'
   }

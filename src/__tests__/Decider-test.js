@@ -5,7 +5,7 @@ it('constructs without throwing', () => {
         chord: 'Bb',
         ask: ['P1', 'M3', 'P5']
     }
-    var decider = new Decider(challenge);
+    new Decider(challenge);
 })
 
 it('note from interval', () => {

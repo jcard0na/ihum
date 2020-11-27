@@ -19,9 +19,9 @@ class Chord extends React.Component {
 
         this.handleDone = this.handleDone.bind(this)
     }
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
         console.log(`chord enabled: ${this.props.enabled}`)
-        if (this.props.enabled) {
+        if (this.props.enabled && !prevProps.enabled) {
             // TODO: Deal with different chord types. Now this only builds a
             // major triad from a given root.
             let root = `${this.props.chord}4`
