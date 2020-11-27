@@ -132,16 +132,20 @@ class Checker extends React.Component {
 
     componentDidUpdate(prevProps) {
         console.log(`checker enabled: ${this.props.enabled}`)
-        if (!this.props.enabled)
-            return
 
-        if (this.decider == null || this.props.challenge !== this.decider.getChallenge())
+        if (!this.props.enabled && prevProps.enabled) {
+            this.setState({ completed: [0] })
+            return
+        }
+
+        if (this.props.enabled && !prevProps.enabled) {
             this.decider = new Decider(this.props.challenge);
 
-        if (this.state.inputCaptured === false)
-            this.captureInputStream();
-        else
-            this.updatePitch()
+            if (this.state.inputCaptured === false)
+                this.captureInputStream();
+            else
+                this.updatePitch()
+        }
 
     }
 

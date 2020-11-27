@@ -3,7 +3,7 @@
 export const challenges = [
     {
         chord: 'Bb',
-        ask: ['P1'],
+        ask: ['P1', 'M3', 'P5'],
     },
     {
         chord: 'F',
