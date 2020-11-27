@@ -58,21 +58,21 @@ class App extends React.Component {
         console.log(this.state.current)
         return (
             <div>
-                <div className="chord">
+                <div>
                     <Chord
                         enabled={this.state.current === states.PLAYING}
                         synth={this.synth}
                         chord={this.state.challenge.chord}
                         onDone={this.checkChallenge} />
                 </div>
-                <div className="checker">
+                <div>
                     <Checker
                         enabled={this.state.current === states.CHECKING}
                         challenge={this.state.challenge}
                         onDone={this.nextChallenge}
                     />
                 </div>
-                <div className="starter">
+                <div>
                     <Starter onClick={this.startStop}
                         value={(this.state.current === states.PAUSED ? "Start" : "Stop")} />
                 </div>

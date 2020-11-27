@@ -71,6 +71,7 @@ class Checker extends React.Component {
         this.buflen = 2048;
         this.buf = new Float32Array(this.buflen);
         this.note = "-"
+        this.labels = [""]
         this.state = {
             inputCaptured: false,
             completed: [0],
@@ -140,6 +141,7 @@ class Checker extends React.Component {
 
         if (this.props.enabled && !prevProps.enabled) {
             this.decider = new Decider(this.props.challenge);
+            this.labels = this.props.challenge.ask;
 
             if (this.state.inputCaptured === false)
                 this.captureInputStream();
@@ -152,8 +154,10 @@ class Checker extends React.Component {
     render() {
         console.log('checker rendered')
         return <div>
-            {this.note}
-            <div><Progress bgcolor='#123456' completed={this.state.completed} /></div>
+            <div><Progress bgcolor='#123456'
+            completed={this.state.completed}
+            labels={this.labels} />
+            </div>
         </div>
     }
 }

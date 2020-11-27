@@ -52,7 +52,7 @@ class Chord extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="chord">
                 {this.props.chord}
             </div>
         )

@@ -1,27 +1,26 @@
 function Progress(props) {
-  const { bgcolor, completed } = props;
-
-  const containerStyles = {
-    height: 20,
-    width: '100%',
-    backgroundColor: "#e0e0de",
-    borderRadius: 50,
-    margin: 50
-  }
-
+  const { bgcolor, completed, labels } = props;
 
   const labelStyles = {
+    padding: 0,
+    fontWeight: 'normal',
+    float: 'left'
+  }
+
+  const progressStyles = {
     padding: 5,
     color: 'white',
-    fontWeight: 'bold'
+    fontWeight: 'normal'
   }
 
   return (
-    <div style={containerStyles}>
+    <div>
       {props.completed.map((value, index) => {
         return (
           <div key={index} style={getFillerStyles(completed[index], bgcolor)}>
-                <span style={labelStyles}>{`${completed[index]}%`}</span>
+                <span style={labelStyles}>{labels[index]}</span>
+                {/* <span style={progressStyles}>{`${completed[index]}%`}</span> */}
+                <span style={progressStyles}></span>
           </div>
         )
       })}
