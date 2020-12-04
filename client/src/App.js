@@ -1,4 +1,5 @@
 import React from 'react';
+//import { useLocation } from "react-router-dom";
 import * as Tone from 'tone'
 
 import './index.css';
@@ -20,65 +21,56 @@ const states = {
     CHECKING: 'checking',
 }
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            challenge: { chord: null, ask: null },
-            num: -1,
-            current: states.PAUSED,
-        }
-        this.synth = new Tone.PolySynth(Tone.Synth).toDestination();
+function App(props) {
+    const synth = new Tone.PolySynth(Tone.Synth).toDestination();
 
-        this.startStop = this.startStop.bind(this);
-        this.nextChallenge = this.nextChallenge.bind(this);
-        this.checkChallenge = this.checkChallenge.bind(this);
-    }
+    const [num,setNum] = React.useState(-1);
+    const [current,setCurrent] = React.useState(states.PAUSED);
+    const [challenge,setChallenge] = React.useState({ chord: null, ask: null})
 
-    nextChallenge() {
-        const next_challenge = (this.state.num + 1) % challenges.length
+    const nextChallenge = () => {
+        const next_challenge = (num + 1) % challenges.length
         /* TODO: check if challenge passed or failed before moving on to next */
-        this.setState({ current: states.PLAYING, num: next_challenge, challenge: challenges[next_challenge] })
+        setCurrent(states.PLAYING);
+        setNum(num+1);
+        setChallenge(challenges[next_challenge]);
     }
 
-    checkChallenge() {
-        this.setState({ current: states.CHECKING })
+    const checkChallenge = () => {
+        setCurrent(states.CHECKING)
     }
 
-    startStop() {
-        if (this.state.current === states.PAUSED) {
+    const startStop = () => {
+        if (current === states.PAUSED) {
             Tone.start()
-            this.nextChallenge();
+            nextChallenge();
         } else {
-            this.setState({ current: states.PAUSED })
+            setCurrent(states.PAUSED)
         }
     }
 
-    render() {
-        console.log(this.state.current)
-        return (
+    return (
+        <div>
             <div>
-                <div>
-                    <Chord
-                        enabled={this.state.current === states.PLAYING}
-                        synth={this.synth}
-                        chord={this.state.challenge.chord}
-                        onDone={this.checkChallenge} />
-                </div>
-                <div>
-                    <Checker
-                        enabled={this.state.current === states.CHECKING}
-                        challenge={this.state.challenge}
-                        onDone={this.nextChallenge}
-                    />
-                </div>
-                <div>
-                    <Starter onClick={this.startStop}
-                        value={(this.state.current === states.PAUSED ? "Start" : "Stop")} />
-                </div>
+                <Chord
+                    enabled={current === states.PLAYING}
+                    synth={synth}
+                    chord={challenge.chord}
+                    onDone={checkChallenge} />
             </div>
-        );
-    }
+            <div>
+                <Checker
+                    enabled={current === states.CHECKING}
+                    challenge={challenge}
+                    onDone={nextChallenge}
+                />
+            </div>
+            <div>
+                <Starter onClick={startStop}
+                    value={(current === states.PAUSED ? "Start" : "Stop")} />
+            </div>
+        </div>
+    );
 }
 
 export default App;

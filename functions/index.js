@@ -33,13 +33,6 @@ var current_challenge = 0;
 
 const app = express()
 
-app.use(cookieSession({
-    name: 'session',
-    keys: ['12siehdieosfehf'],
-    // Cookie Options
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
-}))
-
 app.get('/next-challenge', (req, res) => {
     current_challenge = (current_challenge + 1) % challenges.length;
     res.send(challenges[current_challenge])
