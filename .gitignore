@@ -8,9 +8,6 @@
 # testing
 /coverage
 
-# production
-/build
-
 # account credentials
 /.keys
 
@@ -21,7 +18,11 @@
 .env.test.local
 .env.production.local
 .eslintcache
+.vscode
+.firebase
+.firebaserc
 
+ui-debug.log*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
