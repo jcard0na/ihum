@@ -2,15 +2,11 @@
 // by a series of notes that need to be hummed.
 export const challenges = [
     {
-        chord: 'Bb',
+        chord: 'C',
         ask: ['P1', 'M3', 'P5'],
     },
     {
-        chord: 'F',
-        ask: ['P1', 'M3', 'P5'],
-    },
-    {
-        chord: 'B',
+        chord: 'C#',
         ask: ['P1', 'M3', 'P5'],
     },
     {
@@ -18,7 +14,39 @@ export const challenges = [
         ask: ['P1', 'M3', 'P5'],
     },
     {
+        chord: 'Eb',
+        ask: ['P1', 'M3', 'P5'],
+    },
+    {
+        chord: 'E',
+        ask: ['P1', 'M3', 'P5'],
+    },
+    {
+        chord: 'F',
+        ask: ['P1', 'M3', 'P5'],
+    },
+    {
+        chord: 'F#',
+        ask: ['P1', 'M3', 'P5'],
+    },
+    {
         chord: 'G',
+        ask: ['P1', 'M3', 'P5'],
+    },
+    {
+        chord: 'Ab',
+        ask: ['P1', 'M3', 'P5'],
+    },
+    {
+        chord: 'A',
+        ask: ['P1', 'M3', 'P5'],
+    },
+    {
+        chord: 'Bb',
+        ask: ['P1', 'M3', 'P5'],
+    },
+    {
+        chord: 'B',
         ask: ['P1', 'M3', 'P5'],
     },
 ];

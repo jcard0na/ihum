@@ -34,7 +34,8 @@ function App(props) {
 
     const nextChallenge = () => {
         const next_challenge = (num + 1) % challenges.length
-        setNum(num+1);
+        const random = Math.floor(Math.random()*challenges.length);
+        setNum(random);
         setChallenge(challenges[next_challenge]);
         setCurrent(states.PLAYING);
     }
