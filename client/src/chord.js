@@ -35,9 +35,10 @@ class Chord extends React.Component {
             // this.props.synth.triggerAttack(fifth, "+4n");
 
             this.props.synth.triggerAttack([root, third, fifth]);
-            this.props.synth.triggerRelease([root, third, fifth], "+2n");
+            // Play chord for one second, schedule unsync one second later.
+            this.props.synth.triggerRelease([root, third, fifth], "1");
+            Tone.Transport.scheduleOnce((time) => { return this.handleDone() }, "2")
 
-            Tone.Transport.scheduleOnce((time) => { return this.handleDone() }, "+2n")
             Tone.Transport.start();
         }
     }

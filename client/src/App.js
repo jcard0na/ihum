@@ -7,12 +7,16 @@ import Chord from './Chord.js';
 import Checker from './Checker.js';
 import { challenges } from './challenges';
 
-function Starter(props) {
-    return <div>
-        <button onClick={props.onClick}>
-            {props.value}
-        </button>
-    </div>;
+function Button(props) {
+    if (props.enabled) {
+        return <div>
+            <button onClick={props.onClick}>
+                {props.value}
+            </button>
+        </div>;
+    } else {
+        return null;
+    }
 }
 
 const states = {
@@ -48,6 +52,13 @@ function App(props) {
         }
     }
 
+    const replayChord = () => {
+        if (current === states.CHECKING) {
+            setCurrent(states.PAUSED)
+            setCurrent(states.PLAYING)
+        }
+    }
+
     return (
         <div>
             <div>
@@ -65,8 +76,12 @@ function App(props) {
                 />
             </div>
             <div>
-                <Starter onClick={startStop}
-                    value={(current === states.PAUSED ? "Start" : "Stop")} />
+                <Button onClick={startStop}
+                    enabled={true} value={(current === states.PAUSED ? "Start" : "Stop")} />
+            </div>
+            <div>
+                <Button onClick={replayChord}
+                    enabled={current === states.CHECKING} value="Replay" />
             </div>
         </div>
     );
