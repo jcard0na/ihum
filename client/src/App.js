@@ -30,10 +30,9 @@ function App(props) {
 
     const nextChallenge = () => {
         const next_challenge = (num + 1) % challenges.length
-        /* TODO: check if challenge passed or failed before moving on to next */
-        setCurrent(states.PLAYING);
         setNum(num+1);
         setChallenge(challenges[next_challenge]);
+        setCurrent(states.PLAYING);
     }
 
     const checkChallenge = () => {
