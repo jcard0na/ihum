@@ -20,7 +20,6 @@ class Chord extends React.Component {
         this.handleDone = this.handleDone.bind(this)
     }
     componentDidUpdate(prevProps) {
-        console.log(`chord enabled: ${this.props.enabled}`)
         if (this.props.enabled && !prevProps.enabled) {
             // TODO: Deal with different chord types. Now this only builds a
             // major triad from a given root.
@@ -38,7 +37,7 @@ class Chord extends React.Component {
             this.props.synth.triggerAttack([root, third, fifth]);
             this.props.synth.triggerRelease([root, third, fifth], "+2n");
 
-            Tone.Transport.scheduleOnce((time) => { return this.handleDone() }, "+1n")
+            Tone.Transport.scheduleOnce((time) => { return this.handleDone() }, "+2n")
             Tone.Transport.start();
         }
     }

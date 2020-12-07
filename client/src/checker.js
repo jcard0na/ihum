@@ -132,7 +132,6 @@ class Checker extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        console.log(`checker enabled: ${this.props.enabled}`)
 
         if (!this.props.enabled && prevProps.enabled) {
             this.setState({ completed: [0] })
@@ -152,7 +151,6 @@ class Checker extends React.Component {
     }
 
     render() {
-        console.log('checker rendered')
         return <div>
             <div><Progress bgcolor='#123456'
             completed={this.state.completed}
