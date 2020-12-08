@@ -57,3 +57,16 @@ it('next-challenge returns a challenge', async (done) => {
       }))
       done()
 })
+
+it('chord returns a chord', async (done) => {
+      let actual = await request.get('/chord')
+      let { ok, status, body } = actual
+      console.log(body)
+      expect(ok).toBe(true)
+      expect(status).toBeGreaterThanOrEqual(200)
+      expect(body).toEqual(expect.objectContaining({
+            name: expect.any(String),
+            intervals: expect.any(Array)
+      }))
+      done()
+})

@@ -1,5 +1,7 @@
 const functions = require('firebase-functions')
 const express = require('express')
+const generator = require('./generator')
+
 var cookieSession = require('cookie-session')
 
 // The Firebase Admin SDK to access the Firebase Realtime Database.                                                                                                                                         
@@ -36,6 +38,10 @@ const app = express()
 app.get('/next-challenge', (req, res) => {
     current_challenge = (current_challenge + 1) % challenges.length;
     res.send(challenges[current_challenge])
+})
+
+app.get('/chord', (req, res) => {
+    res.send(generator.generateChord(2));
 })
 
 
