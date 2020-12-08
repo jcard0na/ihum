@@ -41,7 +41,7 @@ app.get('/next-challenge', (req, res) => {
 })
 
 app.get('/chord', (req, res) => {
-    res.send(generator.generateChord(2));
+    res.send(generator.generateChord(req.query.difficulty));
 })
 
 
