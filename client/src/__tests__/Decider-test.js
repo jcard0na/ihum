@@ -2,16 +2,16 @@ import Decider from '../Decider'
 
 it('constructs without throwing', () => {
     const challenge = {
-        chord: 'Bb',
-        ask: ['P1', 'M3', 'P5']
+        name: 'Bb',
+        intervals: ['P1', 'M3', 'P5']
     }
     new Decider(challenge);
 })
 
 it('note from interval', () => {
     const challenge = {
-        chord: 'Bb',
-        ask: ['P1', 'M3', 'P5']
+        name: 'Bb',
+        intervals: ['P1', 'M3', 'P5']
     }
     var decider = new Decider(challenge);
     expect(decider.noteFromInterval('Bb', 'M2')).toEqual('C');
@@ -26,15 +26,15 @@ it('note from interval', () => {
 
 it('hist built correctly', () => {
     const challenge1 = {
-        chord: 'Bb',
-        ask: ['P1', 'M3', 'P5']
+        name: 'Bb',
+        intervals: ['P1', 'M3', 'P5']
     }
     var decider = new Decider(challenge1);
     expect(decider.hist).toEqual({ 'Bb': 0, 'D': 0, 'F': 0 });
 
     const challenge2 = {
-        chord: 'B',
-        ask: ['P1', 'M3', 'P5']
+        name: 'B',
+        intervals: ['P1', 'M3', 'P5']
     }
     decider = new Decider(challenge2);
     expect(decider.hist).toEqual({ 'B': 0, 'Eb': 0, 'F#': 0 });
@@ -42,8 +42,8 @@ it('hist built correctly', () => {
 
 it('hist updates correctly', () => {
     const challenge1 = {
-        chord: 'B',
-        ask: ['P1', 'M3', 'P5']
+        name: 'B',
+        intervals: ['P1', 'M3', 'P5']
     }
     var decider = new Decider(challenge1);
     decider.recordNote('B');
@@ -56,8 +56,8 @@ it('hist updates correctly', () => {
 
 it('completed is correct', () => {
     const challenge1 = {
-        chord: 'B',
-        ask: ['P1', 'M3', 'P5']
+        name: 'B',
+        intervals: ['P1', 'M3', 'P5']
     }
     var decider = new Decider(challenge1);
     decider.recordNote('B');

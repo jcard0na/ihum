@@ -1,11 +1,11 @@
 import React from 'react';
-//import { useLocation } from "react-router-dom";
 import * as Tone from 'tone'
+import fetch from 'node-fetch';
+import { stringify } from 'query-string';
 
 import './index.css';
 import Chord from './Chord.js';
 import Checker from './Checker.js';
-import { challenges } from './challenges';
 
 function Button(props) {
     if (props.enabled) {
@@ -28,15 +28,16 @@ const states = {
 function App(props) {
     const synth = new Tone.PolySynth(Tone.Synth).toDestination();
 
-    const [num,setNum] = React.useState(-1);
     const [current,setCurrent] = React.useState(states.PAUSED);
-    const [challenge,setChallenge] = React.useState({ chord: null, ask: null})
+    const [challenge,setChallenge] = React.useState({ name: null, intervals: null})
 
-    const nextChallenge = () => {
-        const next_challenge = (num + 1) % challenges.length
-        const random = Math.floor(Math.random()*challenges.length);
-        setNum(random);
-        setChallenge(challenges[next_challenge]);
+    const nextChallenge = async () => {
+        const query = { difficulty: 0 }
+        const response = await fetch(`/chord?${stringify(query)}`);
+        const chord = await response.json();
+
+        console.log(chord);
+        setChallenge(chord);
         setCurrent(states.PLAYING);
     }
 
@@ -66,7 +67,7 @@ function App(props) {
                 <Chord
                     enabled={current === states.PLAYING}
                     synth={synth}
-                    chord={challenge.chord}
+                    chord={challenge}
                     onDone={checkChallenge} />
             </div>
             <div>

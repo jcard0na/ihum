@@ -3,6 +3,7 @@ import * as Tone from 'tone'
 
 import Progress from './Progress.js';
 import { Decider } from './Decider';
+import { noteStrings } from './Chord';
 
 /* 
 Pitch detection code copied from from https://github.com/cwilso/PitchDetect
@@ -10,8 +11,7 @@ Copyright (c) 2014 Chris Wilson
 Licensed under MIT License
 */
 
-export const noteStrings = ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
-export const intervalStrings = ['P1', 'm2', 'M2', 'm3', 'M3', 'P4', 'A4', 'P5', 'm6', 'M6', 'm7', 'M7'];
+
 
 function noteFromPitch(frequency) {
     var noteNum = 12 * (Math.log(frequency / 440) / Math.log(2));
@@ -123,7 +123,7 @@ class Checker extends React.Component {
             return
 
         if (this.decider.recordNote(this.note))
-            this.setState({completed: this.decider.getCompleted()})
+            this.setState({ completed: this.decider.getCompleted() })
         if (this.decider.isDone()) {
             this.props.onDone()
         } else {
@@ -140,7 +140,7 @@ class Checker extends React.Component {
 
         if (this.props.enabled && !prevProps.enabled) {
             this.decider = new Decider(this.props.challenge);
-            this.labels = this.props.challenge.ask;
+            this.labels = this.props.challenge.intervals;
 
             if (this.state.inputCaptured === false)
                 this.captureInputStream();
@@ -153,8 +153,8 @@ class Checker extends React.Component {
     render() {
         return <div>
             <div><Progress bgcolor='#123456'
-            completed={this.state.completed}
-            labels={this.labels} />
+                completed={this.state.completed}
+                labels={this.labels} />
             </div>
         </div>
     }

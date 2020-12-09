@@ -1,4 +1,12 @@
-import { noteStrings, intervalStrings } from './Checker';
+import { noteStrings, intervalStrings } from './Chord';
+
+// XXX: Duplicated in Chord
+function rootFromChordName(name) {
+    let root = name[0];
+    if (name.length >= 2 && (name[1] === '#' || name[1] === 'b'))
+        root = root + name[1];
+    return root;
+}
 
 export class Decider {
     constructor(challenge) {
@@ -10,9 +18,10 @@ export class Decider {
         this.current = 0;
         this.required_hits = 10;
         this.challenge_done = false;
-        console.log(`Decider for ${challenge.chord}`);
-        for (let i = 0; i < challenge.ask.length; i++) {
-            let note = this.noteFromInterval(challenge.chord, challenge.ask[i]);
+        console.log(`Decider for ${challenge.name}`);
+        for (let i = 0; i < challenge.intervals.length; i++) {
+            let root = rootFromChordName(challenge.name)
+            let note = this.noteFromInterval(root, challenge.intervals[i]);
             this.hist[note] = 0;
             this.notes[i] = note;
         }
