@@ -12,7 +12,7 @@ const chordTypes = [
             intervals: ['root', 'M3', 'P5'],
         },
         {
-            suffix: 'm',
+            suffix: 'min',
             intervals: ['root', 'm3', 'P5'],
         },
     ],
@@ -23,7 +23,7 @@ const chordTypes = [
             intervals: ['root', 'M3', 'P5', 'M7'],
         },
         {
-            suffix: 'm7',
+            suffix: 'min7',
             intervals: ['root', 'm3', 'P5', 'm7'],
         },
         {
