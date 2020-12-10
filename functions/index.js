@@ -11,23 +11,23 @@ admin.initializeApp();
 const challenges = [
     {
         chord: 'Bb',
-        ask: ['P1', 'M3', 'P5'],
+        ask: ['root', 'M3', 'P5'],
     },
     {
         chord: 'F',
-        ask: ['P1', 'M3', 'P5'],
+        ask: ['root', 'M3', 'P5'],
     },
     {
         chord: 'B',
-        ask: ['P1', 'M3', 'P5'],
+        ask: ['root', 'M3', 'P5'],
     },
     {
         chord: 'D',
-        ask: ['P1', 'M3', 'P5'],
+        ask: ['root', 'M3', 'P5'],
     },
     {
         chord: 'G',
-        ask: ['P1', 'M3', 'P5'],
+        ask: ['root', 'M3', 'P5'],
     },
 ];
 

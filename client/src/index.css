@@ -1,8 +1,13 @@
+@font-face {
+    font-family: 'RealBook';
+    src: local('Realbook'), url(./fonts/realbook-webfont-2.woff2) format('woff2');
+}
+
 body {
     font: 14px "Century Gothic", Futura, sans-serif;
     margin: 25%;
 }
 
 .chord {
-    font: 30px "Century Gothic", Futura, sans-serif;
+    font: 30px "RealBook";
 }

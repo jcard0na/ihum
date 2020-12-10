@@ -1,13 +1,5 @@
 import { noteStrings, intervalStrings } from './Chord';
 
-// XXX: Duplicated in Chord
-function rootFromChordName(name) {
-    let root = name[0];
-    if (name.length >= 2 && (name[1] === '#' || name[1] === 'b'))
-        root = root + name[1];
-    return root;
-}
-
 export class Decider {
     constructor(challenge) {
         this.challenge = challenge;
@@ -20,11 +12,18 @@ export class Decider {
         this.challenge_done = false;
         console.log(`Decider for ${challenge.name}`);
         for (let i = 0; i < challenge.intervals.length; i++) {
-            let root = rootFromChordName(challenge.name)
+            let root = this.rootFromChordName(challenge.name)
             let note = this.noteFromInterval(root, challenge.intervals[i]);
             this.hist[note] = 0;
             this.notes[i] = note;
         }
+    }
+
+    rootFromChordName(name) {
+        let root = name[0];
+        if (name.length >= 2 && (name[1] === 'γ' || name[1] === 'β'))
+            root = root + name[1];
+        return root;
     }
 
     noteFromInterval(root, interval) {
@@ -58,7 +57,7 @@ export class Decider {
             if (this.current === this.notes.length)
                 this.challenge_done = true;
         }
-        return progress_made; 
+        return progress_made;
     }
 
     getChallenge() {
@@ -66,10 +65,10 @@ export class Decider {
     }
 
     getCompleted() {
-        return Array.from(this.notes, 
+        return Array.from(this.notes,
             (note) => {
                 return 100 * this.hist[note] / this.required_hits;
-            }, 
+            },
             this);
     }
 
