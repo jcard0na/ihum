@@ -1,7 +1,7 @@
 const uniqueRandomArray = require('unique-random-array');
 
 
-const noteStrings = ['C', 'Cγ', 'D', 'Eγ', 'E', 'F', 'Fγ', 'G', 'Aβ', 'A', 'Bβ', 'B'];
+const noteStrings = ['C', 'Cγ', 'D', 'Eβ', 'E', 'F', 'Fγ', 'G', 'Aβ', 'A', 'Bβ', 'B'];
 
 /* sorted by difficulty */
 const chordTypes = [
