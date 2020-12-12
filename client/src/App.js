@@ -104,16 +104,16 @@ function App(props) {
                     onDone={checkChallenge} />
             </div>
             <div>
+                <Timer
+                    enabled={current === states.CHECKING}
+                    remaining={Math.round(timeRemaining * 100 / (challenge.time))}
+                />
+            </div>
+            <div>
                 <Checker
                     enabled={current === states.CHECKING}
                     challenge={challenge.chord}
                     onDone={nextChallenge}
-                />
-            </div>
-            <div>
-                <Timer
-                    enabled={current === states.CHECKING}
-                    remaining={Math.round(timeRemaining * 100 / (challenge.time))}
                 />
             </div>
             <div>
