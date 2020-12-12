@@ -46,14 +46,17 @@ it('api endpoint is exported', () => {
       expect(index.api !== null);
 });
 
-it('next-challenge returns a challenge', async (done) => {
-      let actual = await request.get('/next-challenge')
+it('challenge returns a challenge', async (done) => {
+      let actual = await request.get('/challenge').query({ difficulty: 0 })
       let { ok, status, body } = actual
       expect(ok).toBe(true)
       expect(status).toBeGreaterThanOrEqual(200)
       expect(body).toEqual(expect.objectContaining({
-            chord: expect.any(String),
-            ask: expect.any(Array)
+            chord: expect.objectContaining({
+                  name: expect.any(String),
+                  intervals: expect.any(Array)
+            }),
+            time: expect.any(Number)
       }))
       done()
 })

@@ -53,4 +53,12 @@ function generateChord(difficulty) {
     return chord;
 }
 
+function generateChallenge(difficulty) {
+    let challenge = {};
+    challenge['chord'] = generateChord(difficulty)
+    challenge['time'] = 5000
+    return challenge;
+}
+
 exports.generateChord = generateChord;
+exports.generateChallenge = generateChallenge;

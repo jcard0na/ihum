@@ -35,14 +35,12 @@ var current_challenge = 0;
 
 const app = express()
 
-app.get('/next-challenge', (req, res) => {
-    current_challenge = (current_challenge + 1) % challenges.length;
-    res.send(challenges[current_challenge])
-})
-
 app.get('/chord', (req, res) => {
     res.send(generator.generateChord(req.query.difficulty));
 })
 
+app.get('/challenge', (req, res) => {
+    res.send(generator.generateChallenge(req.query.difficulty));
+})
 
 exports.api = functions.https.onRequest(app);

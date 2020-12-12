@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import * as Tone from 'tone'
 import fetch from 'node-fetch';
 import { stringify } from 'query-string';
@@ -6,6 +6,7 @@ import { stringify } from 'query-string';
 import './index.css';
 import Chord from './Chord.js';
 import Checker from './Checker.js';
+import Timer from './Timer.js';
 
 function Button(props) {
     if (props.enabled) {
@@ -25,24 +26,56 @@ const states = {
     CHECKING: 'checking',
 }
 
+// See https://overreacted.io/making-setinterval-declarative-with-react-hooks/
+// for this gem
+function useInterval(callback, delay) {
+    const savedCallback = useRef();
+
+    // Remember the latest callback.
+    useEffect(() => {
+        savedCallback.current = callback;
+    }, [callback]);
+
+    // Set up the interval.
+    useEffect(() => {
+        function tick() {
+            savedCallback.current();
+        }
+        if (delay !== null) {
+            let id = setInterval(tick, delay);
+            return () => clearInterval(id);
+        }
+    }, [delay]);
+}
+
 function App(props) {
     const synth = new Tone.PolySynth(Tone.Synth).toDestination();
 
-    const [current,setCurrent] = React.useState(states.PAUSED);
-    const [challenge,setChallenge] = React.useState({ name: null, intervals: null})
+    const [current, setCurrent] = React.useState(states.PAUSED);
+    const [challenge, setChallenge] = React.useState({ chord: { name: null, intervals: null }, time: 1000 })
+    const [timeRemaining, setTimeRemaining] = React.useState(0);
 
     const nextChallenge = async () => {
         const query = { difficulty: 0 }
-        const response = await fetch(`/chord?${stringify(query)}`);
-        const chord = await response.json();
+        const response = await fetch(`/challenge?${stringify(query)}`);
+        const challenge = await response.json();
 
-        console.log(chord);
-        setChallenge(chord);
+        console.log(challenge);
+
+        setChallenge(challenge);
+        setTimeRemaining(challenge.time);
         setCurrent(states.PLAYING);
     }
 
+    useInterval(() => {    
+        setTimeRemaining(timeRemaining - 1000);
+        if (timeRemaining === 1000)
+            nextChallenge();
+    }, (current === states.CHECKING && timeRemaining) ? 1000 : null);
+
     const checkChallenge = () => {
         setCurrent(states.CHECKING)
+
     }
 
     const startStop = () => {
@@ -67,14 +100,20 @@ function App(props) {
                 <Chord
                     enabled={current === states.PLAYING}
                     synth={synth}
-                    chord={challenge}
+                    chord={challenge.chord}
                     onDone={checkChallenge} />
             </div>
             <div>
                 <Checker
                     enabled={current === states.CHECKING}
-                    challenge={challenge}
+                    challenge={challenge.chord}
                     onDone={nextChallenge}
+                />
+            </div>
+            <div>
+                <Timer
+                    enabled={current === states.CHECKING}
+                    remaining={Math.round(timeRemaining * 100 / (challenge.time))}
                 />
             </div>
             <div>
