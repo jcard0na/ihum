@@ -68,6 +68,7 @@ class Chord extends React.Component {
 
     handleDone() {
         console.log('chord done')
+        this.props.synth.releaseAll(Tone.now());
         this.props.synth.unsync();
         Tone.Transport.stop();
         this.props.onDone();
