@@ -125,7 +125,7 @@ class Checker extends React.Component {
         if (this.decider.recordNote(this.note))
             this.setState({ completed: this.decider.getCompleted() })
         if (this.decider.isDone()) {
-            this.props.onDone()
+            this.props.onDone("passed")
         } else {
             requestAnimationFrame(this.updatePitch);
         }

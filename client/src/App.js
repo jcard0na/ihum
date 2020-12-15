@@ -55,11 +55,12 @@ function App(props) {
     const [challenge, setChallenge] = React.useState({ chord: { name: null, intervals: null }, time: 1000 })
     const [timeRemaining, setTimeRemaining] = React.useState(0);
 
-    const nextChallenge = async () => {
+    const nextChallenge = async (result) => {
         const query = { difficulty: 0 }
         const response = await fetch(`/challenge?${stringify(query)}`);
         const challenge = await response.json();
 
+        console.log(result)
         console.log(challenge);
 
         setChallenge(challenge);
@@ -68,9 +69,9 @@ function App(props) {
     }
 
     useInterval(() => {    
-        setTimeRemaining(timeRemaining - 1000);
+        setTimeRemaining((timeRemaining) => ( timeRemaining - 1000 ));
         if (timeRemaining === 1000)
-            nextChallenge();
+            nextChallenge("timeout");
     }, (current === states.CHECKING && timeRemaining) ? 1000 : null);
 
     const checkChallenge = () => {
