@@ -24,6 +24,7 @@ const states = {
     PAUSED: 'paused',
     PLAYING: 'playing',
     CHECKING: 'checking',
+    FAILED: 'failed',
 }
 
 // See https://overreacted.io/making-setinterval-declarative-with-react-hooks/
@@ -70,8 +71,10 @@ function App(props) {
 
     useInterval(() => {    
         setTimeRemaining((timeRemaining) => ( timeRemaining - 1000 ));
-        if (timeRemaining === 1000)
+        if (timeRemaining === 1000) {
+            setCurrent(states.FAILED);
             nextChallenge("timeout");
+        }
     }, (current === states.CHECKING && timeRemaining) ? 1000 : null);
 
     const checkChallenge = () => {
@@ -82,7 +85,7 @@ function App(props) {
     const startStop = () => {
         if (current === states.PAUSED) {
             Tone.start()
-            nextChallenge();
+            nextChallenge("start");
         } else {
             setCurrent(states.PAUSED)
         }
