@@ -151,12 +151,15 @@ class Checker extends React.Component {
     }
 
     render() {
-        return <div>
-            <div><Progress bgcolor='#123456'
-                completed={this.state.completed}
-                labels={this.labels} />
+        if (this.props.enabled) {
+            return <div>
+                <div><Progress bgcolor='#123456'
+                    completed={this.state.completed}
+                    labels={this.labels} />
+                </div>
             </div>
-        </div>
+        } else
+            return null
     }
 }
 
