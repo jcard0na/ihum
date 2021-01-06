@@ -50,8 +50,6 @@ function useInterval(callback, delay) {
 }
 
 function App(props) {
-    const synth = new Tone.PolySynth(Tone.Synth).toDestination();
-
     const [current, setCurrent] = React.useState(states.PAUSED);
     const [challenge, setChallenge] = React.useState({ chord: { name: null, intervals: null }, time: 1000 })
     const [timeRemaining, setTimeRemaining] = React.useState(0);
@@ -103,7 +101,6 @@ function App(props) {
             <div>
                 <Chord
                     enabled={current === states.PLAYING}
-                    synth={synth}
                     chord={challenge.chord}
                     onDone={checkChallenge} />
             </div>

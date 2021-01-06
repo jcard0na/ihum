@@ -29,6 +29,7 @@ class Chord extends React.Component {
             this.note2idx[synthNotes[i]] = i
         for (let i = 0; i < intervalStrings.length; i++)
             this.intval2offset[intervalStrings[i]] = i
+        this.synth = null;
     }
 
     synthRootFromChordName(name) {
@@ -44,6 +45,11 @@ class Chord extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.enabled && !prevProps.enabled) {
+            if (this.synth !== null && this.synth.disposed !== true) {
+                this.synth.releaseAll();
+                this.synth = null;
+            }
+            this.synth = new Tone.PolySynth(Tone.Synth).toDestination();
             let chord = [];
             let intervals = this.props.chord.intervals;
             let root = this.synthRootFromChordName(this.props.chord.name) + '4'
@@ -53,9 +59,9 @@ class Chord extends React.Component {
             }
             console.log(`${chord}`)
 
-            this.props.synth.triggerAttack(chord);
+            this.synth.triggerAttack(chord);
             // Play chord for one second, schedule unsync one second later.
-            this.props.synth.triggerRelease(chord, "+1");
+            this.synth.triggerRelease(chord, "+1");
             this.props.onDone();
             console.log('chord done')
         }
