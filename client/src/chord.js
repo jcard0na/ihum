@@ -29,8 +29,6 @@ class Chord extends React.Component {
             this.note2idx[synthNotes[i]] = i
         for (let i = 0; i < intervalStrings.length; i++)
             this.intval2offset[intervalStrings[i]] = i
-
-        this.handleDone = this.handleDone.bind(this)
     }
 
     synthRootFromChordName(name) {
