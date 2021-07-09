@@ -1,26 +1,30 @@
-function Progress(props) {
-  const { bgcolor, completed, labels } = props;
+import { makeStyles } from "@material-ui/core/styles";
 
-  const labelStyles = {
+const useStyles = makeStyles((theme) => ({
+  label: {
     padding: 0,
     fontWeight: "normal",
     float: "left",
-  };
-
-  const progressStyles = {
-    padding: 5,
+  },
+  progress: {
+    padding: theme.spacing(1),
     color: "white",
     fontWeight: "normal",
-  };
+  },
+}));
+
+function Progress(props) {
+  const classes = useStyles();
+  const { bgcolor, completed, labels } = props;
 
   return (
     <div>
       {props.completed.map((value, index) => {
         return (
           <div key={index} style={getFillerStyles(completed[index], bgcolor)}>
-            <span style={labelStyles}>{labels[index]}</span>
-            {/* <span style={progressStyles}>{`${completed[index]}%`}</span> */}
-            <span style={progressStyles}></span>
+            <span className={classes.label}>{labels[index]}</span>
+            {/* <span className={classes.progress}>{`${completed[index]}%`}</span> */}
+            <span className={classes.progress}></span>
           </div>
         );
       })}

@@ -8,7 +8,8 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles",
+    "start-dev": "NODE_ENV=dev HTTP_PORT=8080 node index.js"
   },
   "jest": {
     "transform": {
