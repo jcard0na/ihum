@@ -1,9 +1,13 @@
+# ihum
+https://ihum-c73d9.web.app/
 
-# Node version
+## Node version
 
-In order to stay on the free tier of Firebase, we must use Node version 8.  That requires installing slightly older dependencies, for instance jest and ts-jest cannot be newer than 25.
+In order to stay on the free tier of Firebase, we must use Node version 8.
+That requires installing slightly older dependencies, for instance jest and
+ts-jest cannot be newer than 25.
 
-# Firebase Credentials
+## Firebase Credentials
 
 Get service account key from Firebase Console -> Project Settings -> Service
 Accounts and copy it to the .keys directory.  Call it `serviceAccountKey.json`
@@ -23,7 +27,5 @@ npm test
 ```
 
 ## Links
-https://h-malik144.medium.com/jest-testing-for-firebase-functions-a51ce1094d38
-https://www.albertgao.xyz/2017/05/24/how-to-test-expressjs-with-jest-and-supertest/
-
-
+* https://h-malik144.medium.com/jest-testing-for-firebase-functions-a51ce1094d38
+* https://www.albertgao.xyz/2017/05/24/how-to-test-expressjs-with-jest-and-supertest/
