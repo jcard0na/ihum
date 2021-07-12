@@ -3,9 +3,9 @@ const generator = require("./generator");
 
 var cookieSession = require("cookie-session");
 
-const DEV_MODE_ENBALED = process.env.NODE_ENV === "dev";
+const DEV_MODE_ENABLED = process.env.NODE_ENV === "dev";
 
-if (!DEV_MODE_ENBALED) {
+if (!DEV_MODE_ENABLED) {
   // The Firebase Admin SDK to access the Firebase Realtime Database.
   const admin = require("firebase-admin");
   admin.initializeApp();
@@ -38,7 +38,7 @@ var current_challenge = 0;
 
 const app = express();
 
-if (DEV_MODE_ENBALED) {
+if (DEV_MODE_ENABLED) {
   // Set CORS headers
   app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -55,7 +55,7 @@ app.get("/challenge", (req, res) => {
   res.send(generator.generateChallenge(req.query.difficulty));
 });
 
-if (DEV_MODE_ENBALED) {
+if (DEV_MODE_ENABLED) {
   // Serve directly
   const port = process.env.HTTP_PORT || 8080;
   app.listen(port, () => {
