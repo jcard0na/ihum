@@ -1,8 +1,8 @@
 #! /bin/bash
 
 cd client
-npm test
+npm test a
 cd ..
-cd functions
-npm test
+cd backend 
+npm test a
 cd ..

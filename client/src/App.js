@@ -12,7 +12,7 @@ import Checker from "./Checker.js";
 import Timer from "./Timer.js";
 
 // Set API URL (for /challenge endpoint)
-const API_URL = process.env.REACT_APP_BACKEND === "local" ? "http://localhost:8080" : "";
+const API_URL = process.env.REACT_APP_BACKEND;
 
 const CARD_WIDTH_PX = 480;
 const useStyles = makeStyles((theme) => ({
