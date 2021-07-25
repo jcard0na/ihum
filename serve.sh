@@ -22,7 +22,7 @@ cd backend
 if [ ${RUN_MODE} = "prod" ]
 then
     docker build -t ihum-backend .
-    CID1=$(docker run -dp 8080:8080 --name backend ihum-backend)
+    docker run -dp 8080:8080 --name backend ihum-backend
 elif [ ${RUN_MODE} = "devel" ]
 then
     node index.js &
@@ -42,7 +42,7 @@ then
     #
     REACT_APP_BACKEND="http://localhost:8080" npm run build
     docker build -t ihum-appserver .
-    CID2=$(docker run -dp 3000:80 --name web ihum-appserver)
+    docker run -dp 3000:80 --name web ihum-appserver
 elif [ ${RUN_MODE} = "devel" ]
 then
     # Runtime configuration of backend server.
@@ -58,8 +58,8 @@ if [ ${RUN_MODE} = "prod" ]
 then
     docker stop backend
     docker stop web
-    docker rm ${CID1}
-    docker rm ${CID2}
+    docker rm backend
+    docker rm web
 elif [ ${RUN_MODE} = "devel" ]
 then
     kill $PID1
