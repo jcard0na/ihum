@@ -34,7 +34,7 @@ containers and run them locally.  This is useful to test the deployment
 pipeline.
 
 ```
-./serve.sh
+./serve.sh prod
 ```
 
 At this time we are running `ihum` on Google Cloud Platform.  The `backend`
