@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY package* ./
 COPY public ./public
 COPY src ./src
-RUN npm install
+RUN npm ci --only=production
 RUN REACT_APP_BACKEND=$API_URL npm run build
 
 # Move to nginx root directory

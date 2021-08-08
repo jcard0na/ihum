@@ -1,4 +1,3 @@
-const uniqueRandomArray = require("unique-random-array");
 
 const noteStrings = [
   "C",

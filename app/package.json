@@ -4,18 +4,13 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.2",
-    "@testing-library/jest-dom": "^5.11.6",
-    "@testing-library/react": "^12.0.0",
-    "@testing-library/user-event": "^13.2.1",
     "node-fetch": "^2.6.1",
     "query-string": "^7.0.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
-    "tone": "^14.7.58",
-    "vexflow": "^3.0.9",
-    "web-vitals": "^2.1.0"
+    "react-scripts": "^4.0.3",
+    "tone": "^14.7.58"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -40,5 +35,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.6",
+    "@testing-library/react": "^12.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "check-outdated": "^2.8.0"
   }
 }
