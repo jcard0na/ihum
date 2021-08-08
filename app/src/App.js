@@ -109,6 +109,7 @@ function App(props) {
     const response = await fetch(`${API_URL}/challenge?${stringify(query)}`);
     const challenge = await response.json();
 
+    console.log(`${API_URL}/challenge?${stringify(query)}`);
     console.log(`Result: "${result}"`);
     console.log(challenge);
 

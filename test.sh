@@ -1,6 +1,6 @@
 #! /bin/bash
 
-cd client
+cd app
 npm test a
 cd ..
 cd backend 

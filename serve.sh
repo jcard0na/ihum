@@ -13,6 +13,8 @@
 # Variable below determines the default behavior, when invoked without arguments.
 
 DEFAULT_MODE="devel"
+#API_URL="https://backend-l7bccxltpa-lz.a.run.app/"
+API_URL="http://localhost:8080"
 
 [ "$1" = "devel" ] && RUN_MODE="devel"
 [ "$1" = "prod" ] && RUN_MODE="prod"
@@ -30,7 +32,7 @@ then
 fi
 cd ..
 
-cd client
+cd app
 if [ ${RUN_MODE} = "prod" ]
 then
     # Bake the backend URL into the react app at build time.  All the
@@ -40,9 +42,10 @@ then
     # Making this runtime configurable requires tedious changes.  See
     # https://github.com/facebook/create-react-app/issues/2353
     #
-    REACT_APP_BACKEND="http://localhost:8080" npm run build
-    docker build -t ihum-appserver .
-    docker run -dp 3000:80 --name web ihum-appserver
+    docker build -t ihum-app \
+        --build-arg API_URL=${API_URL} \
+        .
+    docker run --env PORT=8080 -dp 3000:8080 --name app ihum-app
 elif [ ${RUN_MODE} = "devel" ]
 then
     # Runtime configuration of backend server.
@@ -57,9 +60,9 @@ read X
 if [ ${RUN_MODE} = "prod" ]
 then
     docker stop backend
-    docker stop web
+    docker stop app
     docker rm backend
-    docker rm web
+    docker rm app
 elif [ ${RUN_MODE} = "devel" ]
 then
     kill $PID1
