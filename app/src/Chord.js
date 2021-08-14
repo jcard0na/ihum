@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect }  from "react";
 import * as Tone from "tone";
 
 // Storing intervalValues and synthNotes as hashmap objects allows us to easily
@@ -75,23 +75,22 @@ export const noteStrings = [
 ];
 
 
-class Chord extends React.Component {
+function Chord(props) {
 
-  synthRootFromChordName(name) {
-    let root = name[0];
-    if (name.length > 2) {
-      if (name[1] === "γ") root = `${root}#`;
-      if (name[1] === "β") root = `${root}b`;
-    }
-    return root;
+  function synthRootFromChordName(name) {
+      let root = name[0];
+      if (name.length > 2) {
+        if (name[1] === "γ") root = `${root}#`;
+        if (name[1] === "β") root = `${root}b`;
+      }
+      return root;
   }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.enabled && !prevProps.enabled) {
+  useEffect(() => {
+    if (props.enabled) {
       let synth = new Tone.PolySynth(Tone.Synth).toDestination();
       let chord = [];
-      let intervals = this.props.chord.intervals;
-      let root = this.synthRootFromChordName(this.props.chord.name) + "4";
+      let intervals = props.chord.intervals;
+      let root = synthRootFromChordName(props.chord.name) + "4";
       chord[0] = root;
       let noteNames = Object.keys(synthNotes);
       for (let i = 1; i < intervals.length; i++) {
@@ -102,14 +101,14 @@ class Chord extends React.Component {
       synth.triggerAttack(chord);
       // Play chord for one second, schedule unsync one second later.
       synth.triggerRelease(chord, "+1");
-      this.props.onDone();
+      props.onDone();
       console.log("chord done");
     }
-  }
+  });
 
-  render() {
-    return <div className="chord">{this.props.chord.name}</div>;
-  }
+  return (
+    <div className="chord">{props.chord.name}</div>
+  )
 }
 
 export default Chord;
