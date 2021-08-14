@@ -1,4 +1,4 @@
-import { noteStrings, intervalStrings } from "./Chord";
+import { noteStrings, intervalValues } from "./Chord";
 
 export class Decider {
   constructor(challenge) {
@@ -32,6 +32,7 @@ export class Decider {
     for (let i = 0; i < noteStrings.length; i++) {
       if (root === noteStrings[i]) root_idx = i;
     }
+    let intervalStrings = Object.keys(intervalValues);
     for (let i = 0; i < intervalStrings.length; i++) {
       if (interval === intervalStrings[i]) interval_idx = i;
     }
