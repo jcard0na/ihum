@@ -15,7 +15,7 @@ beforeAll(() => {
 afterAll(() => {
 });
 
-it('challenge returns a challenge', async (done) => {
+it('challenge returns a challenge', async () => {
       let actual = await request.get('/challenge').query({ difficulty: 0 })
       let { ok, status, body } = actual
       expect(ok).toBe(true)
@@ -27,10 +27,9 @@ it('challenge returns a challenge', async (done) => {
             }),
             time: expect.any(Number)
       }))
-      done()
 })
 
-it('chord returns a chord', async (done) => {
+it('chord returns a chord', async () => {
       let actual = await request.get('/chord').query({ difficulty: 0 })
       let { ok, status, body } = actual
       expect(ok).toBe(true)
@@ -39,10 +38,9 @@ it('chord returns a chord', async (done) => {
             name: expect.any(String),
             intervals: expect.any(Array)
       }))
-      done()
 })
 
-it('chord difficulty 2 returns a diminished chord', async (done) => {
+it('chord difficulty 2 returns a diminished chord', async () => {
       let actual = await request.get('/chord').query({ difficulty: 2 })
       let { ok, status, body } = actual
       expect(ok).toBe(true)
@@ -51,14 +49,12 @@ it('chord difficulty 2 returns a diminished chord', async (done) => {
             name: expect.stringContaining('dim'),
             intervals: expect.any(Array)
       }))
-      done()
 })
 
-it('chord with too high difficulty returns nothing', async (done) => {
+it('chord with too high difficulty returns nothing', async () => {
       let actual = await request.get('/chord').query({ difficulty: 5 })
       let { ok, status, body } = actual
       expect(ok).toBe(true)
       expect(status).toBeGreaterThanOrEqual(200)
       expect(body).toEqual({})
-      done()
 })
